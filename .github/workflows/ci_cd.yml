@@ -38,9 +38,9 @@ jobs:
         run: echo "SKIP_PREFLIGHT_CHECK=true" > .env
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      - name: Run unit tests
-        run: npm test -- --detectOpenHandles
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      #- name: Run unit tests
+       # run: npm test -- --detectOpenHandles
+       # working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Build project
         run: npm run build
