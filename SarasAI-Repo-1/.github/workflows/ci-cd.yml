@@ -1,4 +1,4 @@
-name: CI/CD for Azure Container Apps
+name: CI for azure container registry 
 
 on:
   push:
