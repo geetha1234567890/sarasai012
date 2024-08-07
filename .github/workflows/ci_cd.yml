@@ -61,6 +61,7 @@ jobs:
       - name: Build and push Docker image to ACR
         if: success()
         run: |
+          cd SarasAI-Repo-1/SARAS_AI_FRONTEND
           docker build . -t sarasai.azurecr.io/sarasaiftend:${{ github.sha }}
           docker push sarasai.azurecr.io/sarasaiftend:${{ github.sha }}
 
