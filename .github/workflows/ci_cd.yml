@@ -1,5 +1,4 @@
-
-name: CI for azure container registry 
+name: Build and Test
 
 on:
   push:
@@ -7,8 +6,8 @@ on:
       - main  # Adjust the branch name as per your main branch
 
 permissions:
-  id-token: write
   contents: read
+  id-token: none
 
 jobs:
   build:
@@ -36,7 +35,10 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-     - name: Azure Login
+      - name: Build project
+        run: npm run build
+        
+      - name: Azure Login
         run: |
           az login --use-device-code
 
