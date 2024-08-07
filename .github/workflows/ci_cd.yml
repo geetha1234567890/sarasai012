@@ -23,7 +23,7 @@ jobs:
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Run frontend unit tests
-        run: npm test -- --detectOpenHandles
+        run: npm test -- --detectOpenHandles --coverage
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Build frontend project
