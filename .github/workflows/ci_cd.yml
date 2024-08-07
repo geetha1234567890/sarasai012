@@ -22,16 +22,19 @@ jobs:
         run: npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      - name: Create a simple unit test file
-        run: |
-          mkdir -p src/test
-          echo "const assert = require('assert');" > src/test/sample.test.js
-          echo "const result = true;" >> src/test/sample.test.js
-          echo "assert.strictEqual(result, true, 'Result should be true');" >> src/test/sample.test.js
-
+      
+     # Run frontend unit tests
       - name: Run frontend unit tests
-        run: node src/test/sample.test.js
+        run: |
+          # Ensure the test file exists and run the test
+          if [ -f src/test/sample.test.js ]; then
+            node src/test/sample.test.js
+          else
+            echo "Test file not found!"
+            exit 1
+          fi
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      
 
       - name: Build frontend project
         run: npm run build
