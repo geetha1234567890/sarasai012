@@ -3,7 +3,7 @@ name: Build and Test
 on:
   push:
     branches:
-      - main  # Adjust the branch name as per your main branch
+      - main  # Adjust the branch name as needed
 
 permissions:
   contents: read
