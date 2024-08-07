@@ -29,12 +29,14 @@ jobs:
         run: npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      # Install specific development dependencies for testing
-      - name: Install Jest and Babel dependencies
-        run: npm install --save-dev jest babel-jest @babel/core @babel/preset-env @babel/preset-react
+      # Update dependencies and install necessary Babel plugin
+      - name: Update dependencies and install Babel plugin
+        run: |
+          npm update
+          npm install --save-dev @babel/plugin-proposal-private-property-in-object
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      # Create frontend .env file
+       # Create frontend .env file
       - name: Create frontend .env file
         run: echo "SKIP_PREFLIGHT_CHECK=true" > .env
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
@@ -48,6 +50,7 @@ jobs:
       - name: Build frontend project
         run: npm run build
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      
         
       # Set up PHP for backend
       - name: Set up PHP
