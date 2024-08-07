@@ -23,7 +23,7 @@ jobs:
           node-version: '18'  # Specify the Node.js version
 
       - name: Change to subdirectory
-        run: cd app  # Change to the directory where package.json is located
+        run: cd SarasAI-Repo-1/SARAS_AI_FRONTEND  # Change to the directory where package.json is located
 
       - name: Delete package-lock.json and node_modules
         run: |
