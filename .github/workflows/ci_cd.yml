@@ -22,24 +22,29 @@ jobs:
         with:
           node-version: '18'  # Specify the Node.js version
 
-      - name: Change to subdirectory
-        run: cd SarasAI-Repo-1/SARAS_AI_FRONTEND  # Change to the directory where package.json is located
+      - name: Change to the correct directory
+        run: cd SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Delete package-lock.json and node_modules
         run: |
           rm -rf package-lock.json node_modules
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Install dependencies
         run: npm install
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Create .env file
         run: echo "SKIP_PREFLIGHT_CHECK=true" > .env
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Run unit tests
         run: npm test
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Build project
         run: npm run build
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
         
       - name: Azure Login
         run: |
