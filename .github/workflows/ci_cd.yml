@@ -22,19 +22,9 @@ jobs:
         run: npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      
-     # Run frontend unit tests
       - name: Run frontend unit tests
-        run: |
-          # Ensure the test file exists and run the test
-          if [ -f src/App.test.js ]; then
-            node src/App.test.js
-          else
-            echo "Test file not found!"
-            exit 1
-          fi
+        run: npm test -- --detectOpenHandles
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
-      
 
       - name: Build frontend project
         run: npm run build
