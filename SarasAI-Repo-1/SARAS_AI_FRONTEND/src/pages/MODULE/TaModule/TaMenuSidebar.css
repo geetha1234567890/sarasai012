@@ -1,0 +1,13 @@
+.nav-link.active {
+    color: #f56d3b;
+}
+
+.nav-link.active i,
+.nav-link.active span {
+    color: #f56d3b;
+}
+
+.nav-link.active img {
+    filter: brightness(0) saturate(100%) invert(54%) sepia(58%) saturate(5097%)
+        hue-rotate(343deg) brightness(97%) contrast(94%);
+}
