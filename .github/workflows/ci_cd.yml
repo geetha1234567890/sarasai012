@@ -14,42 +14,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Set up Node.js for frontend
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'  # Specify the Node.js version
 
-      - name: Change to the correct directory
-        run: cd SarasAI-Repo-1/SARAS_AI_FRONTEND
-
-      - name: Delete package-lock.json and node_modules
-        run: |
-          rm -rf package-lock.json node_modules
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
-
-      - name: Install dependencies
+      # Build and test frontend
+      - name: Install frontend dependencies
         run: npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      - name: Create .env file
+      - name: Create frontend .env file
         run: echo "SKIP_PREFLIGHT_CHECK=true" > .env
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      #- name: Run unit tests
-       # run: npm test -- --detectOpenHandles
-       # working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      - name: Run frontend unit tests
+        run: npm test -- --detectOpenHandles
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      - name: Build project
+      - name: Build frontend project
         run: npm run build
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
-        
+
+      # Set up PHP for backend
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'  # Specify the PHP version
+
+      - name: Install backend dependencies
+        run: composer install
+        working-directory: backendapi
+
+      - name: Copy backend .env file
+        run: cp .env.example .env
+        working-directory: backendapi
+
+      - name: Generate backend app key
+        run: php artisan key:generate
+        working-directory: backendapi
+
+      - name: Run backend migrations
+        run: php artisan migrate --force
+        working-directory: backendapi
+
+      - name: Run backend unit tests
+        run: php artisan test
+        working-directory: backendapi
+
+      # Azure Login
       - name: Azure Login
         run: |
           az login --use-device-code
 
+      # Azure Docker Login
       - name: Azure Docker Login
         if: success()
         uses: azure/docker-login@v1
@@ -58,22 +81,48 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and push Docker image to ACR
+      # Build and push Docker image for frontend to ACR
+      - name: Build and push Docker image for frontend
         if: success()
         run: |
-          cd SarasAI-Repo-1
-          docker build . -t sarasai.azurecr.io/sarasaiftend:${{ github.sha }}
-          docker push sarasai.azurecr.io/sarasaiftend:${{ github.sha }}
+          cd SarasAI-Repo-1/SARAS_AI_FRONTEND
+          docker build . -t sarasai.azurecr.io/sarasaifrontend:${{ github.sha }}
+          docker push sarasai.azurecr.io/sarasaifrontend:${{ github.sha }}
 
-      # - name: Deploy to Azure Container Apps
+      # Build and push Docker image for backend to ACR
+      - name: Build and push Docker image for backend
+        if: success()
+        run: |
+          cd backendapi
+          docker build . -t sarasai.azurecr.io/sarasaibackend:${{ github.sha }}
+          docker push sarasai.azurecr.io/sarasaibackend:${{ github.sha }}
+
+      # Deploy to Azure Container Apps (optional)
+      # - name: Deploy frontend to Azure Container Apps
       #   if: success()
       #   run: |
       #     RESOURCE_GROUP=rg
-      #     CONTAINER_APP_NAME=hello
+      #     CONTAINER_APP_NAME=frontend
       #     ACR_LOGIN_SERVER=${{ secrets.ACR_LOGIN_SERVER }}
-      #     IMAGE_NAME=${{ secrets.ACR_LOGIN_SERVER }}/hello
+      #     IMAGE_NAME=${{ secrets.ACR_LOGIN_SERVER }}/sarasaifrontend
 
-      #     # Retry mechanism for deploying to Azure Container Apps
+      #     # Retry mechanism for deploying frontend to Azure Container Apps
+      #     for i in {1..5}; do
+      #       az containerapp update \
+      #         --name $CONTAINER_APP_NAME \
+      #         --resource-group $RESOURCE_GROUP \
+      #         --image $ACR_LOGIN_SERVER/$IMAGE_NAME:${{ github.sha }} && break || sleep 60
+      #     done
+
+      # - name: Deploy backend to Azure Container Apps
+      #   if: success()
+      #   run: |
+      #     RESOURCE_GROUP=rg
+      #     CONTAINER_APP_NAME=backend
+      #     ACR_LOGIN_SERVER=${{ secrets.ACR_LOGIN_SERVER }}
+      #     IMAGE_NAME=${{ secrets.ACR_LOGIN_SERVER }}/sarasabackend
+
+      #     # Retry mechanism for deploying backend to Azure Container Apps
       #     for i in {1..5}; do
       #       az containerapp update \
       #         --name $CONTAINER_APP_NAME \
