@@ -35,11 +35,9 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-      - name: Azure Login
-        if: success()
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+     - name: Azure Login
+        run: |
+          az login --use-device-code
 
       - name: Azure Docker Login
         if: success()
