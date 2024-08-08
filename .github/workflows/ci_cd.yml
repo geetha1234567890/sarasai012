@@ -30,11 +30,11 @@ jobs:
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       # Update dependencies and install necessary Babel plugin
-      #- name: Update dependencies and install Babel plugin
-       # run: |
-         # npm update
-         # npm install --save-dev @babel/plugin-proposal-private-property-in-object
-       # working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      - name: Update dependencies and install Babel plugin
+        run: |
+         npm update
+          npm install --save-dev @babel/plugin-proposal-private-property-in-object
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
        # Create frontend .env file
       - name: Create frontend .env file
