@@ -47,7 +47,7 @@ jobs:
 
       - name: Run unit tests
         run: npm test
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/src
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       # Build frontend project
       - name: Build frontend project
