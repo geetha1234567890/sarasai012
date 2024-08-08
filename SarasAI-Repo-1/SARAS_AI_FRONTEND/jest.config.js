@@ -1,10 +1,10 @@
 module.exports = {
   transform: {
-    "^.+\\.(js|jsx)$": "babel-jest"
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
   },
   transformIgnorePatterns: [
-    "/node_modules/(?!(axios|other-module-to-transform)/)"
+    "/node_modules/(?!axios|bootstrap-icons)"
   ],
-  moduleFileExtensions: ["js", "jsx"],
-  testPathIgnorePatterns: ["/node_modules/"]
+  moduleFileExtensions: ["js", "jsx", "json", "node"],
+  testPathIgnorePatterns: ["/node_modules/"],
 };
