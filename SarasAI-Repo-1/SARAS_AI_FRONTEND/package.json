@@ -85,18 +85,4 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@types/bootstrap": "^5.2.10"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.(js|jsx)$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!(axios)/)"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web"
-    }
-  }
-}
+} 
