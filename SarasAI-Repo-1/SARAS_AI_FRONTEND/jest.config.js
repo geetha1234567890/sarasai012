@@ -3,7 +3,8 @@ module.exports = {
     "^.+\\.(js|jsx)$": "babel-jest"
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(axios)/)"  // Include specific node_modules that need transformation
-  ]
+    "/node_modules/(?!(axios|other-module-to-transform)/)"
+  ],
+  moduleFileExtensions: ["js", "jsx"],
+  testPathIgnorePatterns: ["/node_modules/"]
 };
-
