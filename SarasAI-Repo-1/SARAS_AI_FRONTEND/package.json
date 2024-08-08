@@ -95,7 +95,8 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!(axios)/)"
     ],
-    "moduleFileExtensions": ["js", "jsx"],
-    "testPathIgnorePatterns": ["/node_modules/"]
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web"
+    }
   }
 }
