@@ -29,6 +29,7 @@ jobs:
         run: npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
+      # Install Babel and Jest dependencies
       - name: Install Babel and Jest dependencies
         run: |
           npm install --save-dev @babel/core @babel/preset-env @babel/preset-react @babel/plugin-transform-modules-commonjs babel-jest
@@ -40,13 +41,9 @@ jobs:
         run: echo "SKIP_PREFLIGHT_CHECK=true" > .env
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      ## Run frontend unit tests
-      #- name: Run frontend unit tests
-       # run: npm test -- --coverage
-       # working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
-
-      - name: Run unit tests
-        run: npm test
+      # Run frontend unit tests
+      - name: Run frontend unit tests
+        run: npm test -- --coverage
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       # Build frontend project
