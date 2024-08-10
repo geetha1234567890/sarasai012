@@ -3,79 +3,72 @@ name: Build and Test
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
-
-permissions:
-  contents: read
-  id-token: none
+      - main
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Set up Node.js for frontend
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specify the Node.js version
+          node-version: '18'
 
-      # Install frontend dependencies
       - name: Install frontend dependencies
         run: npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
-      # Install Babel and Jest dependencies
-      - name: Install Babel and Jest dependencies
+      - name: Create Jest configuration
         run: |
-          npm install --save-dev @babel/core @babel/preset-env @babel/preset-react @babel/plugin-transform-modules-commonjs babel-jest
-          npm install --save-dev jest @testing-library/react @testing-library/jest-dom
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+          echo "module.exports = {
+            transform: {
+              '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+            },
+            transformIgnorePatterns: [
+              '/node_modules/(?!(axios)/)',
+            ],
+            moduleNameMapper: {
+              '\\\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+            },
+            testEnvironment: 'jsdom',
+          };" > SarasAI-Repo-1/SARAS_AI_FRONTEND/jest.config.js
 
-      # Create frontend .env file
-      - name: Create frontend .env file
-        run: echo "SKIP_PREFLIGHT_CHECK=true" > .env
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      - name: Create Babel configuration
+        run: |
+          echo '{
+            "presets": ["@babel/preset-env", "@babel/preset-react"],
+            "plugins": ["@babel/plugin-proposal-private-property-in-object"]
+          }' > SarasAI-Repo-1/SARAS_AI_FRONTEND/.babelrc
 
-      # Run frontend unit tests
-      - name: Run frontend unit tests
-        run: npm test -- --coverage
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
+      - name: Install Babel packages
+        run: |
+          npm install --save-dev babel-jest @babel/core @babel/preset-env @babel/preset-react @babel/plugin-proposal-private-property-in-object
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
 
-      # Build frontend project
+      - name: Run tests
+        run: npm test
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
+
+      - name: Lint code
+        run: npm run lint
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
+
       - name: Build frontend project
         run: npm run build
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
-        
-      # Set up PHP for backend
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'  # Specify the PHP version
+          php-version: '8.2'
 
       - name: Install backend dependencies
         run: composer install
         working-directory: backendapi
-
-      - name: Copy backend .env file
-        run: cp .env.example .env
-        working-directory: backendapi
-
-      - name: Generate backend app key
-        run: php artisan key:generate
-        working-directory: backendapi
-
-      - name: Run backend migrations
-        run: php artisan migrate --force
-        working-directory: backendapi
-
-      #- name: Run backend unit tests
-       # run: php artisan test
-       # working-directory: backendapi
 
       # Azure Login
       - name: Azure Login
