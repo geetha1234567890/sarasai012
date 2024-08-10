@@ -19,7 +19,8 @@ jobs:
           node-version: '18'
 
       - name: Install frontend dependencies
-        run: npm install
+        run: |
+          npm install
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Create Jest configuration
@@ -47,19 +48,18 @@ jobs:
       - name: Install Babel packages
         run: |
           npm install --save-dev babel-jest @babel/core @babel/preset-env @babel/preset-react @babel/plugin-proposal-private-property-in-object
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
-
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
       - name: Run tests
         run: npm test
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
+        working-directory: SSarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Lint code
         run: npm run lint
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Build frontend project
         run: npm run build
-        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND/
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
