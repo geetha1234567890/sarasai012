@@ -51,7 +51,7 @@ jobs:
         working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
       - name: Run tests
         run: npm test
-        working-directory: SSarasAI-Repo-1/SARAS_AI_FRONTEND
+        working-directory: SarasAI-Repo-1/SARAS_AI_FRONTEND
 
       - name: Lint code
         run: npm run lint
